@@ -140,18 +140,3 @@ Ultra-fast inference (Groq accelerators)
 Production-grade API design
 
 Clean frontend for demo
-
-📈 Future Improvements
-
-Invoice NER fine-tuning
-
-Multi-page invoice support
-
-Add database + analytics dashboard
-
-Export to CSV / Excel
-
-🧑‍💻 Author
-
-A. Ravi Teja (IIT Bhubaneswar)
-Submission for Bajaj Finserv Datathon
