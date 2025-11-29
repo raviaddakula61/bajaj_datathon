@@ -100,21 +100,44 @@ streamlit run frontend/app.py
 UI opens at:
 http://localhost:8501
 
-📌 Sample JSON Output
 {
   "invoice_id": "CR33504",
   "invoice_date": "13-Jan-2013",
-  "seller_details": { ... },
-  "buyer_details": { ... },
+  "due_date": "",
+  "seller_details": {
+    "name": "APOLLO HOSPITALS",
+    "address": "Opposite IIMB,154/11, Amalodbhavi Nagar, Panduranga Nagar, A Bangalore - 560076 (India)",
+    "city": "Bangalore",
+    "state": "India",
+    "other_details": "Tel.: +(91)-80-26304050 / 26304051 Fax: +(91)-80-41463151"
+  },
+  "buyer_details": {
+    "name": "Saravana kumar V",
+    "address": "Vadalur, Cuddalore taluk, TamilNadu",
+    "city": "Vadalur",
+    "state": "TamilNadu",
+    "other_details": ""
+  },
   "line_items": [
-    {"description": "ROOM RENT", "amount": 4000},
-    {"description": "PHARMACY", "amount": 2765.54}
+    {
+      "description": "ROOM RENT",
+      "quantity": 1,
+      "unit_price": 4000,
+      "amount": 4000
+    },
+    {
+      "description": "PHARMACY",
+      "quantity": 1,
+      "unit_price": 2765.54,
+      "amount": 2765.54
+    }
   ],
   "sub_total": 15143.54,
   "final_total": 15143.54,
   "printed_total": 14343.54,
   "fraud_flags": ["total_mismatch"]
 }
+
 
 🧠 Model Prompt (LLM Extraction Logic)
 
