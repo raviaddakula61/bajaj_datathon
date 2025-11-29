@@ -1,55 +1,29 @@
-🧾 AI-Driven Medical Invoice Extraction System (FastAPI + Streamlit + Groq)
-Bajaj Finserv Datathon – End-to-End Solution
+AI-Driven Medical Invoice Extraction (FastAPI + Streamlit + Groq)
 
-This project is an AI-powered invoice extraction pipeline that converts medical invoices (images/PDFs) into structured JSON using:
+This repository contains an end-to-end system for extracting structured data from medical invoices using a combination of:
 
-OCR → (Tesseract for images + Poppler for PDFs)
+OCR (Tesseract + Poppler)
 
-LLM Extraction → Groq LLaMA-3 model
+LLM (Groq LLaMA-3)
 
-FastAPI Backend
+FastAPI backend
 
-Streamlit Frontend
+Streamlit frontend
 
-Fraud Detection Rules
+Fraud detection rules
 
-Automatic Total Validation
+Automatic total validation
 
-🚀 Architecture Overview
-             ┌────────────────────────────┐
-             │        Streamlit UI        │
-             │  (User Uploads Invoice)    │
-             └───────────────┬────────────┘
-                             │
-                             ▼
-                 ┌─────────────────────┐
-                 │      FastAPI        │
-                 │  /extract endpoint  │
-                 └──────────┬──────────┘
-                            │
-        ┌───────────────────┴───────────────────┐
-        ▼                                       ▼
-┌─────────────────┐                   ┌────────────────────┐
-│     OCR Engine  │                   │ Groq LLaMA-3 Model │
-│ Tesseract/Poppler│  → Extract Text  │  → Extract JSON     │
-└─────────────────┘                   └────────────────────┘
-                            │
-                            ▼
-               ┌────────────────────────┐
-               │ JSON Post-Processor    │
-               │ (Totals, Fraud Flags)  │
-               └────────────────────────┘
+🔥 Features
+1. OCR Extraction
 
-✨ Key Features
-🔍 1. OCR Extraction
+Image support → Tesseract
 
-Images → Processed with Tesseract
+PDF support → Poppler + Tesseract
 
-PDFs → Converted using Poppler → OCR via Tesseract
+Automatic text cleanup
 
-Auto text cleanup + normalization
-
-🤖 2. LLM-Powered Extraction (Groq LLaMA-3)
+2. LLM-Based Extraction (Groq LLaMA-3)
 
 Extracts:
 
@@ -57,93 +31,84 @@ Invoice ID
 
 Dates
 
-Seller & Buyer Details
+Seller & Buyer details
 
-Line Items
+Line items
 
-Tax, Discounts
+Taxes, discounts
 
-Printed Total vs Computed Total
+Totals + printed totals
 
-⚠️ 3. Fraud Detection
+3. Fraud Detection
 
-Automatically flags:
+Flags:
 
-total_mismatch
+Computed total ≠ printed total
 
-missing fields
+Missing fields
 
-suspicious price anomalies
+Suspicious items
 
-⚙️ 4. FastAPI Backend
+4. FastAPI Backend
 
-/extract → Accepts file → Returns structured JSON
+A clean REST API:
+POST /extract → returns JSON.
 
-CORS enabled
+5. Streamlit UI
 
-🖥️ 5. Streamlit Frontend
+Beautiful drag-and-drop interface for demo.
 
-Simple drag-and-drop UI
+🧱 Architecture Overview
+Streamlit UI  →  FastAPI Backend  →  OCR  →  Groq LLaMA-3 → Post-processor → JSON output
 
-Shows extracted JSON output
-
-Clean interface for demo purposes
-
-🛠️ Tech Stack
-Layer	Technology
-Frontend	Streamlit
-Backend	FastAPI
-LLM	Groq API (LLaMA-3)**
-OCR (images)	Tesseract
-OCR (PDFs)	Poppler
-Environment	Python 3.10+
-📦 Project Structure
+📁 Project Structure
 bajaj_datathon/
 │
-├── main.py                  # FastAPI backend
+├── main.py                 # FastAPI backend
+│
 ├── app/
-│   ├── ocr.py               # OCR: images + PDFs
-│   ├── llm.py               # Groq LLM Extraction
-│   ├── prompts.py           # Invoice extraction prompt
-│   ├── postprocess.py       # Totals, fraud detection
+│   ├── ocr.py              # Tesseract + Poppler OCR
+│   ├── llm.py              # Groq LLM extraction
+│   ├── prompts.py          # JSON extraction prompt
+│   ├── postprocess.py      # Total validation + fraud checks
 │
 ├── frontend/
-│   └── app.py               # Streamlit UI
+│   └── app.py              # Streamlit UI
 │
 ├── requirements.txt
 └── README.md
 
 🔑 Environment Variables
 
-Create a .env file (DO NOT COMMIT IT):
+Create .env inside project root (DO NOT PUSH IT):
 
-GROQ_API_KEY=your_key_here
+GROQ_API_KEY=your_groq_api_key
 TESSERACT_PATH=C:\Program Files\Tesseract-OCR\tesseract.exe
 POPPLER_PATH=C:\poppler\Library\bin
 
-▶️ Run the Backend (FastAPI)
+▶️ Running Backend (FastAPI)
 uvicorn main:app --reload
 
 
-API URL:
-👉 http://127.0.0.1:8000/docs
+Open API docs:
+http://127.0.0.1:8000/docs
 
-▶️ Run the Frontend (Streamlit)
+▶️ Running Frontend (Streamlit)
 streamlit run frontend/app.py
 
 
-UI URL:
-👉 http://localhost:8501
+UI opens at:
+http://localhost:8501
 
-🧪 Sample Output JSON
+📌 Sample JSON Output
 {
   "invoice_id": "CR33504",
   "invoice_date": "13-Jan-2013",
   "seller_details": { ... },
   "buyer_details": { ... },
   "line_items": [
-      {"description": "ROOM RENT", "quantity": 1, "unit_price": 4000, "amount": 4000},
-      {"description": "PHARMACY", "amount": 2765.54}
+    {"description": "ROOM RENT", "amount": 4000},
+    {"description": "PHARMACY", "amount": 2765.54}
   ],
   "sub_total": 15143.54,
   "final_total": 15143.54,
@@ -153,68 +118,40 @@ UI URL:
 
 🧠 Model Prompt (LLM Extraction Logic)
 
-Located in app/prompts.py
-Includes rules for:
-
-Normalizing totals
-
-Handling missing data
-
-Fraud detection
-
-Strict JSON enforcement
-
-🧩 Differentiators (Important for Datathon Pitch)
-1️⃣ Hybrid OCR + LLM Pipeline
-
-Combines classical OCR + AI extraction → high accuracy.
-
-2️⃣ Fraud Detection Module
-
-Compares printed vs computed totals → flags anomalies.
-
-3️⃣ PDF + Image Support
-
-Supports JPG/PNG/PDF of any quality.
-
-4️⃣ Lightweight + Fast (Groq API)
-
-Uses LLaMA-3 accelerated on Groq → extremely fast inference.
-
-5️⃣ Production-ready APIs
-
-FastAPI conforms to modern REST standards.
-
-📊 Pitch Deck Included
-
-A ready-made architecture pitch deck is provided in:
-
-/pitch_deck/pitch.pdf
-
-
+Located in app/prompts.py.
 Includes:
 
-System Overview
+Rule-based constraints
 
-Diagram
+Strict JSON formatting
 
-Model Stack
+Fraud detection logic
 
-Differentiators
+⭐ Differentiators (For Datathon Pitch)
 
-Future Enhancements
+Hybrid OCR + LLM pipeline
 
-📘 Future Improvements
+Automated fraud detection
 
-Add NER fine-tuning
+Full PDF + Image support
 
-Support multi-page invoices
+Ultra-fast inference (Groq accelerators)
 
-Add database storage & analytics
+Production-grade API design
 
-Build web dashboard
+Clean frontend for demo
 
-🤝 Contributors
+📈 Future Improvements
+
+Invoice NER fine-tuning
+
+Multi-page invoice support
+
+Add database + analytics dashboard
+
+Export to CSV / Excel
+
+🧑‍💻 Author
 
 A. Ravi Teja (IIT Bhubaneswar)
-Project for Bajaj Finserv Datathon 2025
+Submission for Bajaj Finserv Datathon
