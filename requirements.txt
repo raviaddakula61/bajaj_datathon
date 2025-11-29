@@ -6,3 +6,4 @@ Pillow
 requests
 streamlit
 python-dotenv
+pdf2image
